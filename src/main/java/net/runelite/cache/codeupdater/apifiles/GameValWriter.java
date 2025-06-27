@@ -202,7 +202,8 @@ public class GameValWriter
 		simple(mc, "AnimationID", GameValLoader.ANIMATIONS, id -> null);
 		simple(mc, "SpotanimID", GameValLoader.SPOTANIMS, id -> null);
 		//simple(mc, "JingleID", GameValLoader.JINGLES, id -> null);
-		//simple(mc, "SpriteID", GameValLoader.SPRITES, id -> null);
+
+		new SpriteGameValUpdate(loadGameVals(GameValLoader.SPRITES)).update(mc);
 
 		mc.finish(Repo.RUNELITE.get(), Main.branchName);
 	}
@@ -307,16 +308,46 @@ public class GameValWriter
 		}
 	}
 
-	private static final Pattern FIRST_CHAR = Pattern.compile("(?:^|_|([0-9]+))+(.)");
-
-	private static String camelCase(String str)
+	static String camelCase(String str)
 	{
-		return IDClass.sanitize(FIRST_CHAR.matcher(str)
-			.replaceAll(mr ->
+		var sb = new StringBuilder();
+		boolean wasUnderscore = true;
+		boolean wasNumeric = false;
+		for (int i = 0; i < str.length(); i++)
+		{
+			char c = str.charAt(i);
+
+			boolean uppercase = wasUnderscore || wasNumeric;
+			boolean keep = true;
+			if (c == '_')
 			{
-				var prefix = mr.group(1);
-				return (prefix == null ? "" : prefix) + mr.group(2).toUpperCase();
-			}));
+				keep = false;
+			}
+			if (wasNumeric && i + 1 < str.length())
+			{
+				char next = str.charAt(i + 1);
+				if (next >= '0' && next <= '9')
+				{
+					uppercase = false;
+					keep = true;
+				}
+			}
+
+			if (keep)
+			{
+				if (uppercase)
+				{
+					c = Character.toUpperCase(c);
+				}
+
+				sb.append(c);
+			}
+
+			wasUnderscore = c == '_' ;
+			wasNumeric = c >= '0' && c <= '9';
+		}
+
+		return IDClass.sanitize(sb.toString());
 	}
 
 	private static void simple(MutableCommit mc, String name, int gvid, IntFunction<String> commenter)

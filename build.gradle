@@ -26,7 +26,7 @@ def runeliteVersion = "1.11.9.1"
 dependencies {
 	implementation "com.google.guava:guava:23.2-jre"
 	implementation "com.google.code.gson:gson:2.8.5"
-	implementation "com.github.javaparser:javaparser-core:3.14.9"
+	implementation "com.github.javaparser:javaparser-core:3.27.0"
 	implementation "org.slf4j:slf4j-simple:1.7.12"
 
 	implementation "org.eclipse.jgit:org.eclipse.jgit:5.2.0.201812061821-r"
