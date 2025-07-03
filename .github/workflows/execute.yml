@@ -32,7 +32,7 @@ jobs:
         SRN_SLOW: ${{ github.event.inputs.srn_slow }}
       run: |
         set -e -x
-        curl -sqL https://api.github.com/repos/abextm/runelite-cache-code-updater/releases/latest \
+        curl -sqL https://api.github.com/repos/runelite/runelite-cache-code-updater/releases/latest \
           | jq -r '.assets[] | select(.name | contains(".jar")) | .browser_download_url' \
           | wget -qi- -O rlccau.jar
         echo "$KEYS" | base64 -d | tar -xz -C ~/
