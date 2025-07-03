@@ -38,8 +38,8 @@ jobs:
         echo "$KEYS" | base64 -d | tar -xz -C ~/
         eval $(ssh-agent)
         cat << EOF > ci.properties
-        repo.runelite.origin=git@runelite:abextm/runelite.git
-        repo.srn.origin=git@static.runelite.net:abextm/static.runelite.net.git
+        repo.runelite.origin=git@runelite:runelite/runelite-ccau.git
+        repo.srn.origin=git@static.runelite.net:runelite/static.runelite.net.git
         git.push.allowed=$GIT_PUSH_ALLOWED
         srn.slow=$SRN_SLOW
         EOF
