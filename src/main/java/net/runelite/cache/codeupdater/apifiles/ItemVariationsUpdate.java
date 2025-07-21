@@ -47,6 +47,7 @@ public class ItemVariationsUpdate
 	private static String[][] replacements = new String[][]{
 		{"null", ""},
 		{"(clue|challenge) scroll \\(([^)]+)\\)", "clue scroll $2"},
+		{"scroll box \\(([^)]+)\\)", "scroll box $1"},
 		{"(sandstone|granite) \\(([^)]+)\\)", "$1$2"},
 		{"\\([^)]+\\)", ""},
 		{"[^a-zA-Z0-9 +]", ""},
