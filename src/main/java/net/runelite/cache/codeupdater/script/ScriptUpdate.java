@@ -216,8 +216,9 @@ public class ScriptUpdate
 		for (String key : oldM.getHeader().keySet())
 		{
 			ScriptSource.Line om = oldM.getHeader().get(key);
+			ScriptSource.Line ns = newS.getHeader().get(key);
 
-			String val = om.getOperand();
+			String val = ns.getOperand();
 
 			out.append(String.format("%-25s ", key));
 			out.append(val);
