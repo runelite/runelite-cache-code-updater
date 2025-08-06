@@ -201,6 +201,7 @@ public class GameValWriter
 		simple(mc, "VarbitID", GameValLoader.VARBITS, id -> null);
 		simple(mc, "AnimationID", GameValLoader.ANIMATIONS, id -> null);
 		simple(mc, "SpotanimID", GameValLoader.SPOTANIMS, id -> null);
+		simple(mc, "VarClientID", GameValLoader.VARCS, id -> null);
 		//simple(mc, "JingleID", GameValLoader.JINGLES, id -> null);
 
 		new SpriteGameValUpdate(loadGameVals(GameValLoader.SPRITES)).update(mc);

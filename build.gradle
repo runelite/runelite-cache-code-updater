@@ -22,7 +22,7 @@ lombok {
 
 version = file("version").text.trim()
 
-def runeliteVersion = "1.11.9.1"
+def runeliteVersion = "1.11.13"
 dependencies {
 	implementation "com.google.guava:guava:23.2-jre"
 	implementation "com.google.code.gson:gson:2.8.5"
