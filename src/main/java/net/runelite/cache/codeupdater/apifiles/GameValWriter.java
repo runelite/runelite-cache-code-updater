@@ -159,7 +159,11 @@ public class GameValWriter
 				var rowClass = innerClass.inner("Row");
 				for (var rid : rows)
 				{
-					rowClass.add(rowgvs.get(rid.getId()).getName(), rid.getId());
+					var gv = rowgvs.get(rid.getId());
+					var name = gv == null
+						? "NULL_" + rid.getId()
+						: gv.getName();
+					rowClass.add(name, rid.getId());
 				}
 			}
 
