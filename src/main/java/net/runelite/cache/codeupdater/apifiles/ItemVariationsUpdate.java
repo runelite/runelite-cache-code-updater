@@ -64,6 +64,9 @@ public class ItemVariationsUpdate
 		{"trident of the seas", "trident"},
 		{"trident of the swamp", "toxic trident"},
 		{"toxic staff of the dead", "toxic staff"},
+		{"holy ghrazi rapier", "ghrazi rapier"},
+		{"holy sanguinesti staff", "sanguinesti staff"},
+		{"(holy|sanguine) scythe of vitur", "scythe of vitur"},
 	};
 
 	public static void update() throws IOException
