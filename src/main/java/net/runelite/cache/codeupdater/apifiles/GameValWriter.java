@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.codeupdater.apifiles;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
@@ -227,7 +228,7 @@ public class GameValWriter
 
 			String name = gv.getFiles().get(i);
 
-			if (name != null && GENERATED_NAME.matcher(name).matches())
+			if (name != null && (GENERATED_NAME.matcher(name).matches() || name.isEmpty()))
 			{
 				name = null;
 			}
