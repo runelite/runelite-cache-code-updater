@@ -179,12 +179,17 @@ public class GameValWriter
 
 			for (var gv : loadGameVals(GameValLoader.INTERFACES))
 			{
+				var iface = im.getIntefaceGroup(gv.getId());
+				if (iface == null)
+				{
+					continue;
+				}
+
 				String className = camelCase(gv.getName());
 				var inner = root.inner(className);
 
 				root.add(gv.getName(), gv.getId());
 
-				var iface = im.getIntefaceGroup(gv.getId());
 				var names = new String[iface.length];
 				var nameSet = new HashSet<String>();
 
