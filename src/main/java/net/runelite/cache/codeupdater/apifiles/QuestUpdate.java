@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.codeupdater.apifiles;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import net.runelite.cache.DBRowManager;
 import net.runelite.cache.DBTableIndexManager;
@@ -55,6 +56,10 @@ public class QuestUpdate
 		for (int row : idxMan.getMaster(0).getTupleIndexes().get(0).get(0))
 		{
 			var name = (String) rowMan.get(row).getColumnValues()[2][0];
+			if (Strings.isNullOrEmpty(name))
+			{
+				continue;
+			}
 			dst.append("\t").append(namer.name(name, row)).append("(").append(row).append(", \"").append(name).append("\"),\n");
 		}
 		dst.append('\t');
