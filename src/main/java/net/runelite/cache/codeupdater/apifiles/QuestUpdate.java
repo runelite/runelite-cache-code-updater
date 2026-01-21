@@ -60,7 +60,14 @@ public class QuestUpdate
 			{
 				continue;
 			}
-			dst.append("\t").append(namer.name(name, row)).append("(").append(row).append(", \"").append(name).append("\"),\n");
+
+			var ident = namer.name(name, row);
+			if (ident == null)
+			{
+				continue;
+			}
+
+			dst.append("\t").append(ident).append("(").append(row).append(", \"").append(name).append("\"),\n");
 		}
 		dst.append('\t');
 
