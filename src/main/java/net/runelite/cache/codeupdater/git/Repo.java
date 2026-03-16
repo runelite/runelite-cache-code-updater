@@ -79,7 +79,13 @@ public enum Repo
 			@Override
 			public FileBasedConfig openUserConfig(Config parent, FS fs)
 			{
-				return openSystemConfig(null, fs);
+				var config = Settings.get("git.config");
+				if (config.isEmpty())
+				{
+					return openSystemConfig(null, fs);
+				}
+
+				return new FileBasedConfig(parent, new File(config), fs);
 			}
 
 			@Override
