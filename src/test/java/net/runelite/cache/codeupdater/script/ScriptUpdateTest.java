@@ -118,6 +118,7 @@ public class ScriptUpdateTest
 			new ScriptSource(fis.get('n').toString()),
 			new ScriptSource(fis.get('m').toString()),
 			intLvtIncrement,
+			0,
 			0
 		);
 

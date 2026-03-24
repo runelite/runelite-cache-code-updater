@@ -50,7 +50,8 @@ public class DumpVanilla
 		store.load();
 
 		Disassembler disassembler = new Disassembler();
-		ScriptLoader loader = new ScriptLoader();
+		ScriptLoader loader = new ScriptLoader()
+			.configureForRevision(store.getIndex(IndexType.CLIENTSCRIPT).getRevision());
 
 		File scriptsDir = new File(runeliteRoot, "runelite-client/src/main/scripts");
 		for(File hashFile : scriptsDir.listFiles())

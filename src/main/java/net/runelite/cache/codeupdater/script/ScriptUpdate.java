@@ -61,10 +61,13 @@ import org.eclipse.jgit.lib.Repository;
 public class ScriptUpdate
 {
 	private static final String ILVT = "ilvt";
+	private static final String LLVT = "llvt";
 	private static final String SLVT = "Slvt";
 	private static final Map<String, String> opcodeGroups = ImmutableMap.<String, String>builder()
 		.put("iload", ILVT)
 		.put("istore", ILVT)
+		.put("lload", ILVT)
+		.put("lstore", ILVT)
 		.put("ostore", SLVT)
 		.put("oload", SLVT)
 		.put("jump", "label")
@@ -74,11 +77,20 @@ public class ScriptUpdate
 		.put("if_icmpgt", "label")
 		.put("if_icmple", "label")
 		.put("if_icmpge", "label")
+		.put("if_lcmpeq", "label")
+		.put("if_lcmpne", "label")
+		.put("if_lcmplt", "label")
+		.put("if_lcmpgt", "label")
+		.put("if_lcmple", "label")
+		.put("if_lcmpge", "label")
 		.build();
 
 	public static void update() throws IOException, GitAPIException
 	{
-		ScriptLoader loader = new ScriptLoader();
+		ScriptLoader oldLoader = new ScriptLoader()
+			.configureForRevision(Main.previous.getIndex(IndexType.CLIENTSCRIPT).getRevision());
+		ScriptLoader newLoader = new ScriptLoader()
+			.configureForRevision(Main.next.getIndex(IndexType.CLIENTSCRIPT).getRevision());
 
 		String root = "runelite-client/src/main/scripts";
 		Repository rl = Repo.RUNELITE.get();
@@ -144,18 +156,19 @@ public class ScriptUpdate
 
 				Disassembler disassembler = new Disassembler();
 
-				ScriptDefinition oldSrc = loader.load(id, oData);
+				ScriptDefinition oldSrc = oldLoader.load(id, oData);
 				String oldSrcStr = disassembler.disassemble(oldSrc);
 				ScriptSource oldSource = new ScriptSource(oldSrcStr);
 				oldDelta.writeFile(scriptFilePath, oldSrcStr);
 
-				ScriptDefinition newSrc = loader.load(id, nData);
+				ScriptDefinition newSrc = newLoader.load(id, nData);
 				String newSrcStr = disassembler.disassemble(newSrc);
 				ScriptSource newSource = new ScriptSource(newSrcStr);
 				newDelta.writeFile(scriptFilePath, newSrcStr);
 
 				String newModSource = updateScript(oldSource, newSource, oldModSource,
 					newSrc.getLocalIntCount() - oldSrc.getLocalIntCount(),
+					newSrc.getLocalLongCount() - oldSrc.getLocalLongCount(),
 					newSrc.getLocalObjCount() - oldSrc.getLocalObjCount());
 
 				// Just make sure it atleast assembles still
@@ -201,19 +214,20 @@ public class ScriptUpdate
 	}
 
 	@VisibleForTesting
-	static String updateScript(ScriptSource oldS, ScriptSource newS, ScriptSource oldM, int intLvtIncrement, int objLvtIncrement)
+	static String updateScript(ScriptSource oldS, ScriptSource newS, ScriptSource oldM, int intLvtIncrement, int longLvtIncrement, int objLvtIncrement)
 	{
 		Mapping<ScriptSource.Line> osDom = Mapping.of(oldS.getLines(), oldM.getLines(), new ScriptSourceMapper());
 		Mapping<ScriptSource.Line> osDns = Mapping.of(oldS.getLines(), newS.getLines(), new ScriptSourceMapper());
 
 		Map<String, Integer> defaultLVTIncrement = Map.of(
 			ILVT, intLvtIncrement,
+			LLVT, longLvtIncrement,
 			SLVT, objLvtIncrement);
 
 		StringBuilder out = new StringBuilder();
 		out.append(oldM.getPrelude());
 
-		for (String key : oldM.getHeader().keySet())
+		for (String key : newS.getHeader().keySet())
 		{
 			ScriptSource.Line om = oldM.getHeader().get(key);
 			ScriptSource.Line ns = newS.getHeader().get(key);
@@ -222,7 +236,7 @@ public class ScriptUpdate
 
 			out.append(String.format("%-25s ", key));
 			out.append(val);
-			if (om.getComment() != null)
+			if (om != null && om.getComment() != null)
 			{
 				out.append(om.getComment());
 			}

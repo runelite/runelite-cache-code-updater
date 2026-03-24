@@ -27,17 +27,16 @@ package net.runelite.cache.codeupdater.script;
 
 import java.util.Objects;
 import net.runelite.cache.codeupdater.mapper.Mapper;
-import net.runelite.cache.script.Instruction;
 
 public class ScriptSourceMapper implements Mapper<ScriptSource.Line>
 {
 	@Override
 	public double difference(ScriptSource.Line a, ScriptSource.Line b)
 	{
-		Instruction aii = a.getInstruction();
-		String ai = aii == null ? a.getOpcode() : aii.getName();
-		Instruction bii = b.getInstruction();
-		String bi = bii == null ? b.getOpcode() : bii.getName();
+		Integer aii = a.getOpcodeInt();
+		String ai = aii == null ? a.getOpcode() : "" + aii;
+		Integer bii = b.getOpcodeInt();
+		String bi = bii == null ? b.getOpcode() : "" + bii;
 
 		double sim = 0;
 

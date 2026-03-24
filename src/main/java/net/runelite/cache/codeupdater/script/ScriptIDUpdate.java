@@ -82,6 +82,10 @@ public class ScriptIDUpdate
 				{
 					ann.addPair("integer", new IntegerLiteralExpr(script.getIntArgCount()));
 				}
+				if (script.getLongArgCount() != 0)
+				{
+					ann.addPair("Long", new IntegerLiteralExpr(script.getLongArgCount()));
+				}
 				if (script.getObjArgCount() != 0)
 				{
 					ann.addPair("string", new IntegerLiteralExpr(script.getObjArgCount()));

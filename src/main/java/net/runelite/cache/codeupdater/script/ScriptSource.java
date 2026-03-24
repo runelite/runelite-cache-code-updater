@@ -37,7 +37,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.runelite.cache.definitions.ScriptDefinition;
-import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.RuneLiteInstructions;
 import net.runelite.cache.script.disassembler.Disassembler;
 
@@ -85,25 +84,25 @@ public class ScriptSource
 		}
 
 		@Nullable
-		public Instruction getInstruction()
+		public Integer getOpcodeInt()
 		{
 			if (opcode == null)
 			{
 				return null;
 			}
 
-			Instruction instr = RUNELITE_INSTRUCTIONS.find(opcode);
-			if (instr == null)
+			var opcode = RUNELITE_INSTRUCTIONS.findOpcodeFromName(this.opcode);
+			if (opcode == null)
 			{
 				try
 				{
-					instr = RUNELITE_INSTRUCTIONS.find(Integer.parseInt(opcode));
+					opcode = Integer.parseInt(this.opcode);
 				}
 				catch (NumberFormatException e)
 				{
 				}
 			}
-			return instr;
+			return opcode;
 		}
 
 		public String format(ScriptLineFormatConfig config)
@@ -115,16 +114,16 @@ public class ScriptSource
 			}
 
 			String is = null;
-			Instruction in = getInstruction();
+			Integer in = getOpcodeInt();
 			if (in != null)
 			{
 				if (config.isNoNames())
 				{
-					is = in.getOpcode() + "";
+					is = in + "";
 				}
 				else
 				{
-					is = in.getName();
+					is = RUNELITE_INSTRUCTIONS.findNameFromOpcode(in);
 				}
 			}
 			if (is == null)
