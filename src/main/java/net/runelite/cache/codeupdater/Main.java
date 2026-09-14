@@ -53,7 +53,6 @@ import net.runelite.cache.codeupdater.git.Repo;
 import net.runelite.cache.codeupdater.script.ScriptIDUpdate;
 import net.runelite.cache.codeupdater.script.ScriptUpdate;
 import net.runelite.cache.codeupdater.srn.SRNUpdate;
-import net.runelite.cache.codeupdater.widgets.WidgetUpdate;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
@@ -156,7 +155,6 @@ public class Main
 			APIUpdate::update,
 			GameValWriter::update,
 			ItemVariationsUpdate::update,
-			WidgetUpdate::update,
 			ScriptUpdate::update,
 			ScriptIDUpdate::update,
 			QuestUpdate::update,
