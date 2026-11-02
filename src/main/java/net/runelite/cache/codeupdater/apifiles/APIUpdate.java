@@ -111,6 +111,7 @@ public class APIUpdate
 	static class LegacyIDClass extends IDClass
 	{
 		private final Namer namer = new Namer();
+		private int count = 0;
 
 		public LegacyIDClass(String name, String replacement)
 		{
@@ -125,11 +126,18 @@ public class APIUpdate
 
 		public void add(String name, int id)
 		{
+			if (count > 32000)
+			{
+				return;
+			}
+
 			String javaName = namer.name(name, id);
 			if (javaName == null)
 			{
 				return;
 			}
+
+			count++;
 
 			super.add(javaName, id);
 		}
